@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import br.com.fatecsenai.projetoSpringBoot.entities.Category;
 import br.com.fatecsenai.projetoSpringBoot.entities.Order;
 import br.com.fatecsenai.projetoSpringBoot.entities.OrderItem;
+import br.com.fatecsenai.projetoSpringBoot.entities.Payment;
 import br.com.fatecsenai.projetoSpringBoot.entities.Product;
 import br.com.fatecsenai.projetoSpringBoot.entities.User;
 import br.com.fatecsenai.projetoSpringBoot.entities.enums.OrderStatus;
@@ -68,7 +69,7 @@ public class TestConfig implements CommandLineRunner {
 		User u2 = new User(null, "Alex Green", "alex@gmail.com", "977777777", "123456");
 
 		Order o1 = new Order(null, Instant.parse("2022-01-01T19:53:07Z"), OrderStatus.PAID, u1);
-		Order o2 = new Order(null, Instant.parse("2022-01-02T03:42:10Z"), OrderStatus.CANCELED, u2);
+		Order o2 = new Order(null, Instant.parse("2022-01-02T03:42:10Z"), OrderStatus.WAYTING_PAYMENT, u2);
 		Order o3 = new Order(null, Instant.parse("2022-01-03T15:21:22Z"), OrderStatus.WAYTING_PAYMENT, u1);
 
 		userRepository.saveAll(Arrays.asList(u1, u2));
@@ -79,6 +80,11 @@ public class TestConfig implements CommandLineRunner {
 		OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
 		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 
-		OrderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3));
+		OrderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+
+		Payment pay1 = new Payment(null, Instant.parse("2022-01-01T21:53:07Z"), o1);
+		o1.setPayment(pay1);
+
+		OrderRepository.save(o1);
 	}
 }
